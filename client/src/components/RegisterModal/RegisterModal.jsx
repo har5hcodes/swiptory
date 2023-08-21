@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ModalContainer from "../ModalContainer/ModalContainer";
 import styles from "./registerModal.module.css";
 import passwordIcon from "../../assets/passwordIcon.png";
@@ -17,20 +17,22 @@ const RegisterModal = () => {
     event.preventDefault();
     setShowError(false);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message);
       }
 
-      const responseData = await response.json();
       setShowLogin(true);
     } catch (error) {
       setShowError(true);

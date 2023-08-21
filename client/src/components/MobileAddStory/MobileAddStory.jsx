@@ -153,7 +153,7 @@ const MobileAddStory = () => {
     if (id) {
       const getPost = async () => {
         const response = await fetch(
-          `http://localhost:5000/api/post/postDetails/${id}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/post/postDetails/${id}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -262,14 +262,17 @@ const MobileAddStory = () => {
 
     try {
       console.log(postData.slides);
-      const response = await fetch("http://localhost:5000/api/post/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ slides: postData.slides }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/post/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ slides: postData.slides }),
+        }
+      );
       console.log(response);
       if (response.ok) {
         setShowSuccessMessage(true);
@@ -320,7 +323,7 @@ const MobileAddStory = () => {
       }));
 
       const response = await fetch(
-        `http://localhost:5000/api/post/edit/${id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/post/edit/${id}`,
         {
           method: "PUT",
           headers: {

@@ -24,13 +24,16 @@ const CategorySection = (props) => {
 
   const fetchYourStories = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/user/posts`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/user/posts`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         // console.log(data.posts);
@@ -45,13 +48,16 @@ const CategorySection = (props) => {
 
   const fetchBookmarks = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/user/bookmarks`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/user/bookmarks`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         console.log(data.posts);
@@ -68,7 +74,7 @@ const CategorySection = (props) => {
     const fetchCategoryStories = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/post/${props.category}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/post/${props.category}`
         );
         if (response.ok) {
           const data = await response.json();
