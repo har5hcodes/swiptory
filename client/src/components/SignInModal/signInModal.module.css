@@ -1,0 +1,80 @@
+.formHeader {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+.formContainer {
+  width: 80%;
+  font-weight: 700;
+}
+
+.formContainer div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.formContainer label {
+  width: 100px;
+  font-size: 1.2rem;
+}
+.formContainer input {
+  padding: 10px;
+  width: 250px;
+  color: #8e8e8e;
+  font-weight: 700;
+}
+
+.formContainer button {
+  background-color: var(--secondary-color);
+  color: #000;
+  font-weight: 700;
+}
+
+.error {
+  color: #ff0e0e;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.passwordContainer {
+  position: relative;
+}
+.passwordIcon {
+  position: absolute;
+  top: 50%;
+  right: 55px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .formHeader {
+    font-size: 1.5rem;
+  }
+  .formContainer div {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .passwordIcon {
+    right: 45px;
+    top: 75%;
+  }
+}
+
+@media (max-width: 515px) {
+  .passwordIcon {
+    right: 30px;
+    top: 75%;
+  }
+}
+
+@media (max-width: 450px) {
+  .passwordIcon {
+    right: 0;
+    top: 75%;
+  }
+}

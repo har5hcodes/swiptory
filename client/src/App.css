@@ -1,0 +1,13 @@
+:root {
+  --primary-color: #ff7373;
+  --primary-onhover: #ff5555;
+  --secondary-color: #73abff;
+  --secondary-onhover: #5599ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+}

@@ -1,0 +1,112 @@
+.navbarWrapper {
+  position: relative;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.navbarContainer {
+  width: 100%;
+  height: 75px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  box-shadow: 0px 4px 15px 0px #00000026;
+}
+
+.boxShadow {
+  box-shadow: 0px 4px 15px 0px #00000026;
+}
+
+.noBoxShadow {
+  box-shadow: none;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+button {
+  width: 140px;
+  text-align: center;
+  padding: 6px 20px;
+  border: 3px solid transparent;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  border-color: #085cff;
+}
+
+.registerBtn {
+  background-color: var(--primary-color);
+}
+
+.signinBtn {
+  background-color: var(--secondary-color);
+}
+
+.bookmarkBtn {
+  background-color: var(--primary-color);
+}
+
+.addStoryBtn {
+  background-color: var(--primary-color);
+}
+
+.hamburger,
+.cross {
+  cursor: pointer;
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+}
+
+.menuSection {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 75px;
+  background-color: white;
+  height: 200px;
+  width: 300px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0 40px 0;
+  box-shadow: 0px 4px 15px 0px #00000026;
+}
+
+.menuSection p {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.menuSection button {
+  background-color: var(--primary-color);
+}

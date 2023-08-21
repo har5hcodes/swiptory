@@ -1,0 +1,72 @@
+.mobileMenuSectionIn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 75px;
+  background-color: white;
+  height: 350px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0 50px 0;
+  box-shadow: 0px 10px 15px 0px #00000026;
+}
+
+.mobileMenuSectionIn div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.mobileMenuSectionIn button {
+  background-color: var(--primary-color);
+}
+
+.mobileMenuSectionOut {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 75px;
+  background-color: white;
+  height: 250px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 0 40px 0;
+  box-shadow: 0px 10px 15px 0px #00000026;
+}
+
+.mobileMenuSectionOut div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.registerBtn {
+  background-color: var(--primary-color);
+}
+
+.signinBtn {
+  background-color: var(--primary-color);
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+}
