@@ -119,7 +119,6 @@ const MobileAddStory = () => {
 
   const id = searchParams.get("id");
 
-  console.log(id);
   const navigate = useNavigate();
   const [activeSlideIndex, setActiveSlideIndex] = useState(1);
   const [slideCount, setSlideCount] = useState(3);
@@ -157,7 +156,6 @@ const MobileAddStory = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setPostData(data);
           setSlideCount(data.slides.length);
         } else {
@@ -261,7 +259,6 @@ const MobileAddStory = () => {
     setErrorMessage("");
 
     try {
-      console.log(postData.slides);
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/post/add`,
         {
@@ -273,7 +270,6 @@ const MobileAddStory = () => {
           body: JSON.stringify({ slides: postData.slides }),
         }
       );
-      console.log(response);
       if (response.ok) {
         setShowSuccessMessage(true);
         setTimeout(() => {

@@ -137,7 +137,6 @@ const StoryViewer = (props) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         const updatedCount = data.likeCount;
         const newLikeCount = [...likeCount];
         newLikeCount[slideIndex] = updatedCount;
@@ -157,7 +156,7 @@ const StoryViewer = (props) => {
   };
 
   const handleShare = (slideIndex) => {
-    const link = `http://localhost:3000/slide/${slides[slideIndex]._id}`;
+    const link = `${process.env.REACT_APP_FRONTEND_URL}/slide/${slides[slideIndex]._id}`;
     navigator.clipboard.writeText(link);
     const newLinkCopiedStatus = [...linkCopiedStatus];
     newLinkCopiedStatus[slideIndex] = true;
@@ -173,12 +172,15 @@ const StoryViewer = (props) => {
   const handleContainerClick = (event) => {
     const containerWidth = event.currentTarget.offsetWidth;
     const clickX = event.nativeEvent.offsetX;
+    const clickY = event.nativeEvent.offsetY;
     const clickPercentage = (clickX / containerWidth) * 100;
 
-    if (clickPercentage <= 50) {
-      handlePreviousSlide();
-    } else {
-      handleNextSlide();
+    if (clickY >= 75 && clickY <= 550) {
+      if (clickPercentage <= 50) {
+        handlePreviousSlide();
+      } else {
+        handleNextSlide();
+      }
     }
   };
 
@@ -193,31 +195,28 @@ const StoryViewer = (props) => {
             className={styles.leftArrow}
           />
         )}
-        <div
-          className={styles.storyViewer}
-          onClick={(event) => handleContainerClick(event)}
-        >
+        <div className={styles.storyViewer}>
           <div className={styles.progressBarContainer}>
             {slides.map((slide, index) => {
+              const isCompleted = index <= currentSlideIndex;
+              const isActive = index === currentSlideIndex;
               return (
                 <div
                   key={index}
-                  className={
-                    index === currentSlideIndex
-                      ? styles.progressBarActive
-                      : styles.progressBar
-                  }
+                  className={`${styles.progressBar} ${
+                    isCompleted ? styles.progressBarCompleted : ""
+                  } ${isActive ? styles.progressBarActive : ""}`}
                 ></div>
               );
             })}
           </div>
-
           <div
             style={{
               backgroundImage: `linear-gradient(rgba(0, 0, 0, 0 ), rgba(0, 0, 0,  0.8)), linear-gradient(rgba(0, 0, 0, 0.2 ), rgba(0, 0, 0,   0)) , url(${slides[currentSlideIndex].imageUrl})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
+            onClick={(event) => handleContainerClick(event)}
             className={styles.categoryStory}
           >
             {linkCopiedStatus[currentSlideIndex] && (

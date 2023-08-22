@@ -105,6 +105,10 @@ const CategorySection = (props) => {
     return null;
   }
 
+  if (categoryStories.length === 0) {
+    <div>Loading</div>;
+  }
+
   return (
     <>
       <div className={styles.categoryContainer}>
