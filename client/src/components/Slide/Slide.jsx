@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import StoryViewer from "../../components/StoryViewer/StoryViewer";
 import Home from "../HomePage/HomePage";
 
 const Slide = () => {
-  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+
   const [slideData, setSlideData] = useState(null);
 
   useEffect(() => {

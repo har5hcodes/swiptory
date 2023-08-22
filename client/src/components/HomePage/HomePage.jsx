@@ -9,6 +9,7 @@ import SignInModal from "../SignInModal/SignInModal";
 import AddStory from "../AddStory/AddStory";
 import MobileAddStory from "../MobileAddStory/MobileAddStory";
 import StoryViewer from "../StoryViewer/StoryViewer";
+import Slide from "../Slide/Slide";
 
 const filters = [
   {
@@ -70,6 +71,7 @@ const HomePage = () => {
   const displayViewStory = searchParams.get("viewstory");
   const displayViewBoomarks = searchParams.get("viewbookmarks");
   const displayYourStories = searchParams.get("yourstories");
+  const displaySlide = searchParams.get("slide");
   const [authValidated, setAuthValidated] = useState(false);
 
   const [isMobile, setIsMobile] = useState(false);
@@ -184,6 +186,7 @@ const HomePage = () => {
       {displayAddStory && (isMobile ? <MobileAddStory /> : <AddStory />)}
       {displayEditStory && (isMobile ? <MobileAddStory /> : <AddStory />)}
       {displayViewStory && <StoryViewer slides={story} isMobile={isMobile} />}
+      {displaySlide && <Slide />}
     </>
   );
 };
