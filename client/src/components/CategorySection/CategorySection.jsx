@@ -80,6 +80,7 @@ const CategorySection = (props) => {
         );
         if (response.ok) {
           const data = await response.json();
+          console.log(data.posts);
           setCategoryStories(data.posts);
         } else {
           console.error("Failed to fetch category stories");
@@ -105,6 +106,10 @@ const CategorySection = (props) => {
     return null;
   }
   if (isMobile && !displayYourStories && props.category === "your-stories") {
+    return null;
+  }
+
+  if (props.category === "your-stories" && categoryStories.length === 0) {
     return null;
   }
 
