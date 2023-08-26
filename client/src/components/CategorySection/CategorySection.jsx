@@ -109,10 +109,6 @@ const CategorySection = (props) => {
     return null;
   }
 
-  if (props.category === "your-stories" && categoryStories.length === 0) {
-    return null;
-  }
-
   if (categoryStories.length === 0) {
     <div>Loading</div>;
   }
