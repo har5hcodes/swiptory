@@ -1,69 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
-import FilterSection from "../FilterSection/FilterSection";
-import CategorySection from "../CategorySection/CategorySection";
-import RegisterModal from "../RegisterModal/RegisterModal";
+import Navbar from "../components/Navbar/Navbar";
+import FilterSection from "../components/FilterSection/FilterSection";
+import CategorySection from "../components/CategorySection/CategorySection";
+import RegisterModal from "../components/RegisterModal/RegisterModal";
 import { useSearchParams } from "react-router-dom";
-import SignInModal from "../SignInModal/SignInModal";
-import AddStory from "../AddStory/AddStory";
-import MobileAddStory from "../MobileAddStory/MobileAddStory";
-import StoryViewer from "../StoryViewer/StoryViewer";
-import Slide from "../Slide/Slide";
-
-const filters = [
-  {
-    name: "All",
-    imageUrl:
-      "https://images.unsplash.com/photo-1606639386467-3d28d4e99d64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGFsbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    name: "Education",
-    imageUrl:
-      "https://images.unsplash.com/photo-1594312915251-48db9280c8f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-  },
-  {
-    name: "Fashion",
-    imageUrl:
-      "https://images.unsplash.com/photo-1566206091558-7f218b696731?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
-  },
-  {
-    name: "Fitness",
-    imageUrl:
-      "https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-  },
-  {
-    name: "Food",
-    imageUrl:
-      "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=710&q=80",
-  },
-
-  {
-    name: "Movie",
-    imageUrl:
-      "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1025&q=80",
-  },
-
-  {
-    name: "Music",
-    imageUrl:
-      "https://images.unsplash.com/photo-1487180144351-b8472da7d491?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80",
-  },
-  {
-    name: "Sports",
-    imageUrl:
-      "https://images.unsplash.com/photo-1444491741275-3747c53c99b4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-  },
-  {
-    name: "Travel",
-    imageUrl:
-      "https://images.unsplash.com/photo-1520466809213-7b9a56adcd45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-  },
-];
+import SignInModal from "../components/SignInModal/SignInModal";
+import AddStory from "../components/AddStory/AddStory";
+import MobileAddStory from "../components/MobileAddStory/MobileAddStory";
+import StoryViewer from "../components/StoryViewer/StoryViewer";
+import Slide from "../components/Slide/Slide";
+import filters from "../constants/data";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
   const displayRegisterModal = searchParams.get("register");
   const displaySignInModal = searchParams.get("signin");
   const displayAddStory = searchParams.get("addstory");
@@ -72,9 +24,11 @@ const HomePage = () => {
   const displayViewBoomarks = searchParams.get("viewbookmarks");
   const displayYourStories = searchParams.get("yourstories");
   const displaySlide = searchParams.get("slide");
-  const [authValidated, setAuthValidated] = useState(false);
 
+  const [authValidated, setAuthValidated] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState(["All"]);
+  const [story, setStory] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -113,8 +67,6 @@ const HomePage = () => {
     };
   }, [displaySignInModal]);
 
-  const [selectedFilters, setSelectedFilters] = useState(["All"]);
-
   const handleSelectFilters = (filter) => {
     if (filter === "All") {
       setSelectedFilters(["All"]);
@@ -129,34 +81,35 @@ const HomePage = () => {
     }
   };
 
-  const [story, setStory] = useState(null);
-
   const handleStoryViewer = (story) => {
     setStory(story);
     navigate("/?viewstory=true");
   };
 
-  return (
-    <>
-      <Navbar authValidated={authValidated} />
-
-      {displayViewBoomarks ? (
+  const renderCategorySections = () => {
+    if (displayViewBoomarks) {
+      return (
         <CategorySection
           category="bookmarks"
           handleStoryViewer={handleStoryViewer}
         />
-      ) : displayYourStories ? (
+      );
+    } else if (displayYourStories) {
+      return (
         <CategorySection
           category="your-stories"
           handleStoryViewer={handleStoryViewer}
         />
-      ) : (
+      );
+    } else {
+      return (
         <>
           <FilterSection
             selectedFilters={selectedFilters}
             handleSelectFilters={handleSelectFilters}
           />
           <CategorySection
+            selectedFilters={selectedFilters}
             category="your-stories"
             handleStoryViewer={handleStoryViewer}
           />
@@ -179,13 +132,22 @@ const HomePage = () => {
                 />
               ))}
         </>
-      )}
+      );
+    }
+  };
+
+  return (
+    <>
+      <Navbar authValidated={authValidated} />
+      {renderCategorySections()}
 
       {displayRegisterModal && <RegisterModal />}
       {displaySignInModal && <SignInModal />}
+
       {displayAddStory && (isMobile ? <MobileAddStory /> : <AddStory />)}
       {displayEditStory && (isMobile ? <MobileAddStory /> : <AddStory />)}
       {displayViewStory && <StoryViewer slides={story} isMobile={isMobile} />}
+
       {displaySlide && <Slide />}
     </>
   );

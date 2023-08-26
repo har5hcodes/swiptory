@@ -104,13 +104,65 @@ router.post("/like", requireAuth, async (req, res) => {
   }
 });
 
-router.get("/posts", requireAuth, async (req, res) => {
+// const fetchYourStories = async () => {
+//   try {
+//     const response = await fetch(
+//       `${process.env.REACT_APP_BACKEND_URL}/api/user/posts`,
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `${localStorage.getItem("token")}`,
+//         },
+//         body: JSON.stringify({ filters: props.selectedFilters }),
+//       }
+//     );
+//     if (response.ok) {
+//       const data = await response.json();
+//       setCategoryStories(data.posts);
+//     } else {
+//       console.error("Failed to fetch your stories");
+//     }
+//   } catch (error) {
+//     console.error("Error fetching your stories:", error);
+//   }
+// };
+
+router.post("/posts", requireAuth, async (req, res) => {
+  const { filters } = req.body;
+  console.log(filters);
+
   try {
     const userId = req.user;
 
-    const posts = await Post.find({ postedBy: userId }).populate("slides");
+    if (filters.length > 0 && filters[0] === "All") {
+      const posts = await Post.find({ postedBy: userId }).populate("slides");
+      return res.status(200).json({ posts });
+    }
 
-    res.status(200).json({ posts });
+    // Find the posts by the user
+    const posts = await Post.find({ postedBy: userId });
+
+    // Collect all slide IDs from the matching posts
+    const slideIds = posts.flatMap((post) => post.slides);
+
+    // Filter slides based on the selected categories
+    const filteredSlides = await Slide.find({
+      _id: { $in: slideIds },
+      category: { $in: filters },
+    });
+
+    // Populate the filtered slides back into the matching posts
+    const populatedPosts = posts.map((post) => {
+      return {
+        ...post.toObject(),
+        slides: filteredSlides.filter((slide) =>
+          post.slides.includes(slide._id)
+        ),
+      };
+    });
+
+    return res.status(200).json({ posts: populatedPosts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

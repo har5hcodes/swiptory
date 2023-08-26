@@ -111,7 +111,7 @@ router.get("/:category", async (req, res) => {
       {
         $project: {
           slides: 1,
-          postedBy: 1, // Include the postedBy field
+          postedBy: 1,
         },
       },
     ]);

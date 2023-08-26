@@ -9,6 +9,7 @@ const CategorySection = (props) => {
   const [isMobile, setIsMobile] = useState(false);
   const [categoryStories, setCategoryStories] = useState([]);
   const [maxStoriesInRow, setMaxStoriesInRow] = useState(4);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 576);
@@ -27,16 +28,17 @@ const CategorySection = (props) => {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/user/posts`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `${localStorage.getItem("token")}`,
           },
+          body: JSON.stringify({ filters: props.selectedFilters }),
         }
       );
       if (response.ok) {
         const data = await response.json();
-        // console.log(data.posts);
+        console.log(data.posts);
         setCategoryStories(data.posts);
       } else {
         console.error("Failed to fetch your stories");
@@ -96,7 +98,8 @@ const CategorySection = (props) => {
     if (props.category === "bookmarks") {
       fetchBookmarks();
     }
-  }, [props.category]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.category, props.selectedFilters]);
 
   if (categoryStories.length === 0) {
     return null;
@@ -140,23 +143,20 @@ const CategorySection = (props) => {
             />
           ))}
         </div>
-        {!isMobile &&
-          // hide see more button if there are no more stories to show
-          maxStoriesInRow < categoryStories.length && (
-            <button
-              onClick={() =>
-                //  if there are more categoryStories than maxStoriesInRow add +4
-                setMaxStoriesInRow(
-                  maxStoriesInRow + 4 > categoryStories.length
-                    ? categoryStories.length
-                    : maxStoriesInRow + 4
-                )
-              }
-              className={styles.seemoreBtn}
-            >
-              See more
-            </button>
-          )}
+        {!isMobile && maxStoriesInRow < categoryStories.length && (
+          <button
+            onClick={() =>
+              setMaxStoriesInRow(
+                maxStoriesInRow + 4 > categoryStories.length
+                  ? categoryStories.length
+                  : maxStoriesInRow + 4
+              )
+            }
+            className={styles.seemoreBtn}
+          >
+            See more
+          </button>
+        )}
       </div>
     </>
   );
