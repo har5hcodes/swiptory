@@ -1,6 +1,7 @@
 <h3>SwipTory - Web Story Platform</h3>
 Welcome to the official repository for SwipTory, a web story platform that offers a unique way to experience content through captivating stories. SwipTory allows users to immerse themselves in stories covering various topics while providing interactive features to enhance their engagement.
 
+
 Deployed Site: <a href="https://rad-churros-f3cef0.netlify.app/">https://rad-churros-f3cef0.netlify.app/</a>
 
 <h4>Project Overview</h4>
