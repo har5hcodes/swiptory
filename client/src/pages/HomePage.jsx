@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import FilterSection from "../components/FilterSection/FilterSection";
 import CategorySection from "../components/CategorySection/CategorySection";
 import RegisterModal from "../components/RegisterModal/RegisterModal";
-import { useSearchParams } from "react-router-dom";
 import SignInModal from "../components/SignInModal/SignInModal";
 import AddStory from "../components/AddStory/AddStory";
 import MobileAddStory from "../components/MobileAddStory/MobileAddStory";
 import StoryViewer from "../components/StoryViewer/StoryViewer";
 import Slide from "../components/Slide/Slide";
 import filters from "../constants/data";
+import YourStories from "../components/YourStories/YourStories";
+import Bookmarks from "../components/Bookmarks/Bookmarks";
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  const displayRegisterModal = searchParams.get("register");
-  const displaySignInModal = searchParams.get("signin");
-  const displayAddStory = searchParams.get("addstory");
-  const displayEditStory = searchParams.get("editstory");
-  const displayViewStory = searchParams.get("viewstory");
-  const displayViewBoomarks = searchParams.get("viewbookmarks");
-  const displayYourStories = searchParams.get("yourstories");
-  const displaySlide = searchParams.get("slide");
+  const queryParams = new URLSearchParams(location.search);
+
+  const displayParamMappings = {
+    register: queryParams.get("register"),
+    signin: queryParams.get("signin"),
+    addstory: queryParams.get("addstory"),
+    editstory: queryParams.get("editstory"),
+    viewstory: queryParams.get("viewstory"),
+    viewbookmarks: queryParams.get("viewbookmarks"),
+    yourstories: queryParams.get("yourstories"),
+    slide: queryParams.get("slide"),
+  };
 
   const [authValidated, setAuthValidated] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -65,7 +70,7 @@ const HomePage = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [displaySignInModal]);
+  }, [displayParamMappings.signin]);
 
   const handleSelectFilters = (filter) => {
     if (filter === "All") {
@@ -87,17 +92,12 @@ const HomePage = () => {
   };
 
   const renderCategorySections = () => {
-    if (displayViewBoomarks) {
+    if (displayParamMappings.viewbookmarks) {
+      return <Bookmarks handleStoryViewer={handleStoryViewer} />;
+    } else if (displayParamMappings.yourstories) {
       return (
-        <CategorySection
-          category="bookmarks"
-          handleStoryViewer={handleStoryViewer}
-        />
-      );
-    } else if (displayYourStories) {
-      return (
-        <CategorySection
-          category="your-stories"
+        <YourStories
+          selectedFilters={selectedFilters}
           handleStoryViewer={handleStoryViewer}
         />
       );
@@ -108,11 +108,13 @@ const HomePage = () => {
             selectedFilters={selectedFilters}
             handleSelectFilters={handleSelectFilters}
           />
-          <CategorySection
-            selectedFilters={selectedFilters}
-            category="your-stories"
-            handleStoryViewer={handleStoryViewer}
-          />
+          {!isMobile && (
+            <YourStories
+              selectedFilters={selectedFilters}
+              handleStoryViewer={handleStoryViewer}
+            />
+          )}
+
           {selectedFilters.includes("All")
             ? filters
                 .filter((filter) => filter.name !== "All")
@@ -141,14 +143,18 @@ const HomePage = () => {
       <Navbar authValidated={authValidated} />
       {renderCategorySections()}
 
-      {displayRegisterModal && <RegisterModal />}
-      {displaySignInModal && <SignInModal />}
+      {displayParamMappings.register && <RegisterModal />}
+      {displayParamMappings.signin && <SignInModal />}
 
-      {displayAddStory && (isMobile ? <MobileAddStory /> : <AddStory />)}
-      {displayEditStory && (isMobile ? <MobileAddStory /> : <AddStory />)}
-      {displayViewStory && <StoryViewer slides={story} isMobile={isMobile} />}
+      {displayParamMappings.addstory &&
+        (isMobile ? <MobileAddStory /> : <AddStory />)}
+      {displayParamMappings.editstory &&
+        (isMobile ? <MobileAddStory /> : <AddStory />)}
+      {displayParamMappings.viewstory && (
+        <StoryViewer slides={story} isMobile={isMobile} />
+      )}
 
-      {displaySlide && <Slide />}
+      {displayParamMappings.slide && <Slide />}
     </>
   );
 };

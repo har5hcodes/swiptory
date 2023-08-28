@@ -107,38 +107,26 @@ router.post("/like", requireAuth, async (req, res) => {
 router.post("/posts", requireAuth, async (req, res) => {
   const { filters } = req.body;
   console.log(filters);
-
   try {
     const userId = req.user;
 
-    if (filters.length > 0 && filters[0] === "All") {
-      const posts = await Post.find({ postedBy: userId }).populate("slides");
-      return res.status(200).json({ posts });
+    let filteredPosts;
+
+    if (filters.includes("All")) {
+      filteredPosts = await Post.find({ postedBy: userId }).populate({
+        path: "slides",
+        match: {},
+      });
+    } else {
+      filteredPosts = await Post.find({ postedBy: userId }).populate({
+        path: "slides",
+        match: { category: { $in: filters } },
+      });
     }
 
-    const posts = await Post.find({ postedBy: userId });
+    filteredPosts = filteredPosts.filter((post) => post.slides.length > 0);
 
-    const slideIds = posts.flatMap((post) => post.slides);
-
-    const filteredSlides = await Slide.find({
-      _id: { $in: slideIds },
-      category: { $in: filters },
-    });
-
-    if (filteredSlides.length === 0) {
-      return res.status(200).json({ posts: [] }); // Return an empty array or appropriate response
-    }
-
-    const populatedPosts = posts.map((post) => {
-      return {
-        ...post.toObject(),
-        slides: filteredSlides.filter((slide) =>
-          post.slides.includes(slide._id)
-        ),
-      };
-    });
-
-    return res.status(200).json({ posts: populatedPosts });
+    res.status(200).json({ posts: filteredPosts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -155,14 +143,14 @@ router.get("/bookmarks", requireAuth, async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const posts = user.bookmarks.map((bookmark) => {
+    const bookmarks = user.bookmarks.map((bookmark) => {
       const slide = bookmark;
       return {
         slides: [slide],
       };
     });
 
-    res.status(200).json({ posts });
+    res.status(200).json({ bookmarks });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

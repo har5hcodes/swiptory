@@ -48,7 +48,6 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(username, password);
 
     if (!username || !password) {
       return res
@@ -89,7 +88,6 @@ router.post("/login", async (req, res) => {
 router.post("/logout", async (req, res) => {
   try {
     const { username } = req.body;
-    console.log(username);
 
     const token = jwt.sign(
       {

@@ -1,0 +1,60 @@
+.categoryContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.categoryHeader {
+  font-size: 2rem;
+}
+
+.categoryStories {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+  padding: 40px;
+}
+
+.seemoreBtn {
+  background-color: var(--primary-color);
+}
+
+.noStories {
+  height: 42rem;
+  width: 100%;
+  background-color: azure;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.addStoryBtn {
+  background-color: var(--primary-color);
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
+  .categoryStories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .categoryContainer {
+    margin-top: 0;
+  }
+  .categoryStories {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 0 20px;
+  }
+  .categoryHeader {
+    margin: 25px 0;
+  }
+}
