@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import StoryViewer from "../../components/StoryViewer/StoryViewer";
-import Home from "../../pages/HomePage";
 
 const Slide = () => {
   const [searchParams] = useSearchParams();
@@ -35,7 +34,6 @@ const Slide = () => {
 
   return (
     <>
-      <Home />
       <StoryViewer slides={slideData} />
     </>
   );
