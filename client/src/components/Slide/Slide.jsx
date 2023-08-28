@@ -29,7 +29,7 @@ const Slide = () => {
   }, [id]);
 
   if (!slideData) {
-    return <div>Page doesn't exist.</div>;
+    return <> </>;
   }
 
   return (
