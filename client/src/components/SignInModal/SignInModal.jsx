@@ -9,10 +9,12 @@ const SignInModal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
+    setIsProcessing(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`,
@@ -42,6 +44,8 @@ const SignInModal = () => {
     } catch (error) {
       setError(error.message);
       console.log(error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -83,6 +87,9 @@ const SignInModal = () => {
             <div>
               <button onClick={handleSubmit}>Login</button>
             </div>
+            {isProcessing && (
+              <div className={styles.formHeader}>Processing...</div>
+            )}
           </form>
         </>
       )}

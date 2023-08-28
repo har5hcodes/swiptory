@@ -71,6 +71,10 @@
   border: 2px solid #8e8e8e;
 }
 
+.formHeader {
+  text-align: center;
+}
+
 .btnContainer {
   width: 90%;
   display: flex;

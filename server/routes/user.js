@@ -106,7 +106,6 @@ router.post("/like", requireAuth, async (req, res) => {
 
 router.post("/posts", requireAuth, async (req, res) => {
   const { filters } = req.body;
-  console.log(filters);
   try {
     const userId = req.user;
 

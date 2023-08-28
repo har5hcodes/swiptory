@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styles from "./addStory.module.css";
 import ModalContainer from "../ModalContainer/ModalContainer";
 import modalCloseIcon from "../../assets/modalCloseIcon.jpg";
@@ -116,11 +116,11 @@ const Form = (props) => {
 
 const AddStory = () => {
   const [searchParams] = useSearchParams();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const id = searchParams.get("id");
 
   console.log(id);
-  const navigate = useNavigate();
   const [activeSlideIndex, setActiveSlideIndex] = useState(1);
   const [slideCount, setSlideCount] = useState(3);
   const [postData, setPostData] = useState({
@@ -260,6 +260,7 @@ const AddStory = () => {
     setShowError(false);
     setErrorMessage("");
 
+    setIsProcessing(true);
     try {
       console.log(postData.slides);
       const response = await fetch(
@@ -277,7 +278,7 @@ const AddStory = () => {
       if (response.ok) {
         setShowSuccessMessage(true);
         setTimeout(() => {
-          navigate("/");
+          window.location.href = "/";
         }, 1200);
       } else {
         setShowSuccessMessage(false);
@@ -286,6 +287,8 @@ const AddStory = () => {
     } catch (error) {
       setShowSuccessMessage(false);
       console.error("Network error:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -313,6 +316,7 @@ const AddStory = () => {
     setShowError(false);
     setErrorMessage("");
 
+    setIsProcessing(true);
     try {
       const payload = postData.slides.map((slide) => ({
         slideNumber: slide.slideNumber,
@@ -337,7 +341,7 @@ const AddStory = () => {
       if (response.ok) {
         setShowSuccessMessage(true);
         setTimeout(() => {
-          navigate("/");
+          window.location.href = "/";
         }, 1200);
       } else {
         setShowSuccessMessage(false);
@@ -346,8 +350,18 @@ const AddStory = () => {
     } catch (error) {
       setShowSuccessMessage(false);
       console.error("Network error:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
+
+  if (isProcessing) {
+    return (
+      <ModalContainer>
+        <h1 className={styles.formHeader}>Processing...</h1>
+      </ModalContainer>
+    );
+  }
 
   return (
     <ModalContainer>

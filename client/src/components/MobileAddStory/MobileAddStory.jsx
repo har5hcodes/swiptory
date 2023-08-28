@@ -116,10 +116,9 @@ const Form = (props) => {
 
 const MobileAddStory = () => {
   const [searchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   const id = searchParams.get("id");
 
-  const navigate = useNavigate();
   const [activeSlideIndex, setActiveSlideIndex] = useState(1);
   const [slideCount, setSlideCount] = useState(3);
   const [postData, setPostData] = useState({
@@ -147,6 +146,7 @@ const MobileAddStory = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -257,6 +257,7 @@ const MobileAddStory = () => {
 
     setShowError(false);
     setErrorMessage("");
+    setIsProcessing(true);
 
     try {
       const response = await fetch(
@@ -282,6 +283,8 @@ const MobileAddStory = () => {
     } catch (error) {
       setShowSuccessMessage(false);
       console.error("Network error:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -308,6 +311,7 @@ const MobileAddStory = () => {
 
     setShowError(false);
     setErrorMessage("");
+    setIsProcessing(true);
 
     try {
       const payload = postData.slides.map((slide) => ({
@@ -342,8 +346,18 @@ const MobileAddStory = () => {
     } catch (error) {
       setShowSuccessMessage(false);
       console.error("Network error:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
+
+  if (isProcessing) {
+    return (
+      <ModalContainer>
+        <h1 className={styles.formHeader}>Processing...</h1>
+      </ModalContainer>
+    );
+  }
 
   return (
     <ModalContainer>

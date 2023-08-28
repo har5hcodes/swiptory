@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./categorySection.module.css";
+
 import Story from "../Story/Story";
 
 const CategorySection = (props) => {

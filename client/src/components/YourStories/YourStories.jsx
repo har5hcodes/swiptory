@@ -7,6 +7,7 @@ const YourStories = (props) => {
   const [yourStories, setYourStories] = useState([]);
   const [maxStoriesInRow, setMaxStoriesInRow] = useState(4);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,6 +23,7 @@ const YourStories = (props) => {
   }, []);
 
   const fetchYourStories = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/user/posts`,
@@ -43,6 +45,8 @@ const YourStories = (props) => {
       }
     } catch (error) {
       console.error("Error fetching your stories:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -50,6 +54,21 @@ const YourStories = (props) => {
     fetchYourStories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.selectedFilters]);
+
+  if (isMobile && isLoading) {
+    return (
+      <div className={styles.categoryContainer}>
+        <div
+          style={{
+            textAlign: "center",
+          }}
+          className={styles.categoryHeader}
+        >
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   if (isMobile && yourStories.length === 0) {
     return (

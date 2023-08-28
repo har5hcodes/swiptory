@@ -8,14 +8,15 @@ const RegisterModal = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showLogin, setShowLogin] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setShowError(false);
+    setIsProcessing(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`,
@@ -38,6 +39,8 @@ const RegisterModal = () => {
       setShowError(true);
       setErrorMessage(error.message);
       console.log(error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -87,6 +90,9 @@ const RegisterModal = () => {
               <div>
                 <button onClick={handleSubmit}>Register</button>
               </div>
+              {isProcessing && (
+                <div className={styles.formHeader}>Processing...</div>
+              )}
             </form>
           </>
         )}

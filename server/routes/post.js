@@ -8,7 +8,6 @@ router.get("/postDetails/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const existingPost = await Post.findById(id).populate("slides");
-    console.log(existingPost);
     res.status(200).send(existingPost);
   } catch (err) {
     console.log(err);
@@ -18,7 +17,6 @@ router.get("/postDetails/:id", async (req, res) => {
 
 router.post("/add", requireAuth, async (req, res) => {
   const { slides } = req.body;
-  console.log(slides);
   try {
     const slideObjects = slides.map((slideData, index) => {
       return new Slide({
@@ -58,7 +56,7 @@ router.put("/edit/:id", requireAuth, async (req, res) => {
 
     const slideObjects = editedSlides.map((slideData, index) => {
       return new Slide({
-        slideNumber: index + 1, // Reassign slideNumber during editing
+        slideNumber: index + 1,
         header: slideData.header,
         description: slideData.description,
         imageUrl: slideData.imageUrl,
@@ -86,7 +84,7 @@ router.get("/:category", async (req, res) => {
     const posts = await Post.aggregate([
       {
         $lookup: {
-          from: "slides", // Assuming your slide collection is named "slides"
+          from: "slides",
           localField: "slides",
           foreignField: "_id",
           as: "slides",

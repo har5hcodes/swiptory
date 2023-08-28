@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./mobileMenu.module.css";
 import avatar from "../../assets/avatar.png";
 import { Link } from "react-router-dom";
+
 const MobileMenu = (props) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
