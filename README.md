@@ -5,7 +5,7 @@ Welcome to the official repository for SwipTory, a web story platform that offer
 <p>Deployed Site: <a href="https://rad-churros-f3cef0.netlify.app/">https://rad-churros-f3cef0.netlify.app/</a></p>
 
 <h4>Project Overview</h4>
-SwipTory aims to create a seamless user experience for consuming and sharing stories. Users can explore, like, save, and share stories across a wide range of categories. The platform also offers features for registered users, including the ability to add, edit, and manage their own stories. The project is designed to meet the following objectives:
+SwipTory aims to create a seamless user experience for consuming and sharing stories. Users can explore, like, save, and share stories across a wide range of categories. The platform also offers features for registered users, including the ability to add, edit, and manage their own stories. 
 
 <h4>Features</h4>
 <ui>
