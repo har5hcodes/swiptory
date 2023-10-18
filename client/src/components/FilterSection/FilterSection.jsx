@@ -11,7 +11,7 @@ const FilterSection = (props) => {
             key={index}
             onClick={() => props.handleSelectFilters(filter.name)}
             style={{
-              border: props.selectedFilters.includes(filter.name) // Corrected here
+              border: props.selectedFilters.includes(filter.name) 
                 ? "5px solid var(--secondary-color)"
                 : "5px solid transparent",
             }}
